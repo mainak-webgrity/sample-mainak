@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Landing — Contact Us</title>
+    <meta name="description" content="Simple responsive landing page with a contact form." />
+    <style>
+        :root {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --accent: #6ee7b7;
+            --muted: #9aa4b2;
+            --glass: rgba(255, 255, 255, 0.03);
+            --radius: 12px;
+            --max: 1000px;
+            --gap: 20px;
+            --shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;  
+            background:
+                radial-gradient(800px 400px at 10% 10%, rgba(110, 231, 183, 0.06), transparent 8%),
+                radial-gradient(600px 300px at 90% 90%, rgba(99, 102, 241, 0.04), transparent 6%),
+                var(--bg);
+            color: #e6eef8;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 48px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--gap);
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max);
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 40px;
+            align-items: stretch;
+            margin: 0 auto;
+        }
+
+        @media (max-width:900px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 12px
+            }
+        }
+
+        .hero {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+            padding: 36px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            min-height: 320px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), #6366f1);
+            display: grid;
+            place-items: center;
+            font-weight: 700;
+            color: #05202a;
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.18);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            line-height: 1.05;
+        }
+
+        p.lead {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .features {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .feature {
+            background: var(--glass);
+            padding: 12px;
+            border-radius: 10px;
+            flex: 1;
+            font-size: 14px;
+            color: var(--muted);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .feature .dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            display: grid;
+            place-items: center;
+            font-weight: 600;
+            color: var(--accent)
+        }
+
+        /* Form card */
+        .form-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            padding: 26px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.035);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 280px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--muted);
+            display: block;
+            margin-bottom: 6px
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: inherit;
+            outline: none;
+            font-size: 14px;
+            transition: box-shadow .15s, border-color .12s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: rgba(110, 231, 183, 0.9);
+            box-shadow: 0 6px 20px rgba(110, 231, 183, 0.06);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            padding-top: 12px
+        }
+
+        .hint {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 6px
+        }
+
+        .submit {
+            background: linear-gradient(90deg, var(--accent), #7c3aed);
+            color: #05202a;
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .08s ease, opacity .12s;
+        }
+
+        .submit:active {
+            transform: translateY(1px)
+        }
+
+        .submit[disabled] {
+            opacity: 0.7;
+            cursor: wait;
+            transform: none
+        }
+
+        .secondary {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--muted);
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .status {
+            font-size: 14px;
+            color: var(--muted);
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .sr-only {
+            position: absolute !important;
+            height: 1px;
+            width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+            white-space: nowrap;
+            border: 0;
+            padding: 0;
+            margin: -1px;
+        }
+
+        footer {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 8px
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container" role="main">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="brand" aria-hidden="false">
+                <div class="logo">LP</div>
+                <div>
+                    <h1 id="hero-title">Contact Mainak Deb <br> Technical Project Manager</h1>
+                    <p class="lead">Fast, responsive and accessible. Get in touch and we'll respond within 24 hours.</p>
+                </div>
+            </div>
+
+            <div style="margin-top:8px;">
+                <p style="margin:0;color:var(--muted)"><strong>Built for:</strong> Small teams, freelancers, and side
+                    projects</p>
+            </div>
+
+            <div class="features" aria-hidden="true">
+                <div class="feature">
+                    <div class="dot">✓</div>
+                    <div>Privacy-first handling</div>
+                </div>
+                <div class="feature">
+                    <div class="dot">⚡</div>
+                    <div>Fast client-side validation</div>
+                </div>
+            </div>
+
+            <footer aria-hidden="true">
+                <small>No tracking. No third-party cookies.</small>
+            </footer>
+        </section>
+
+        <aside class="form-card" aria-labelledby="contact-heading">
+            <h2 id="contact-heading" style="margin:0 0 4px 0">Contact Me</h2>
+            <p class="hint" style="margin-bottom:12px">Fill the form and click send. This demo performs client-side
+                validation and simulates sending.</p>
+
+            <form id="contactForm" novalidate>
+                <!-- Honeypot (bots) -->
+                <label class="sr-only" for="website">Website</label>
+                <input class="sr-only" type="text" id="website" name="website" autocomplete="off" tabindex="-1"
+                    aria-hidden="true">
+
+                <div class="row">
+                    <div>
+                        <label for="name">Name</label>
+                        <input id="name" name="name" type="text" placeholder="Your name" required minlength="2">
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="email" placeholder="you@example.com" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="subject">Subject</label>
+                    <input id="subject" name="subject" type="text" placeholder="Short subject" required>
+                </div>
+
+                <div>
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Tell us about your project..." required
+                        minlength="10"></textarea>
+                </div>
+
+                <div style="display:flex;gap:10px;align-items:center">
+                    <input id="consent" name="consent" type="checkbox" required>
+                    <label for="consent" style="margin:0;font-size:13px;color:var(--muted)">I agree to be contacted
+                        regarding my inquiry.</label>
+                </div>
+
+                <div class="controls">
+                    <div style="flex:1">
+                        <button type="submit" class="submit" id="sendBtn">Send message</button>
+                        <button type="button" class="secondary" id="clearBtn" style="margin-left:8px">Clear</button>
+                    </div>
+                    <div style="min-width:180px">
+                        <div id="status" class="status" aria-live="polite">Ready to send</div>
+                    </div>
+                </div>
+            </form>
+        </aside>
+    </main>
+
+    <script>
+        // Minimal client-side handling + accessibility
+        (function () {
+            const form = document.getElementById('contactForm');
+            const statusEl = document.getElementById('status');
+            const sendBtn = document.getElementById('sendBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const honeypot = document.getElementById('website');
+
+            function setStatus(text, ok = true) {
+                statusEl.textContent = text;
+                statusEl.style.color = ok ? 'var(--muted)' : '#ffb4b4';
+            }
+
+            function validateHTMLForm(f) {
+                // Uses native validation for basics; you can extend here.
+                if (!f.checkValidity()) {
+                    // find first invalid control and focus
+                    const firstInvalid = f.querySelector(':invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                    }
+                    return false;
+                }
+                // honeypot must be empty
+                if (honeypot.value.trim() !== '') {
+                    setStatus('Spam detected. Submission blocked.', false);
+                    return false;
+                }
+                return true;
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (!validateHTMLForm(form)) return;
+
+                // collect data
+                const data = {
+                    name: form.name.value.trim(),
+                    email: form.email.value.trim(),
+                    subject: form.subject.value.trim(),
+                    message: form.message.value.trim(),
+                    consent: form.consent.checked
+                };
+
+                // simulate send
+                sendBtn.disabled = true;
+                setStatus('Sending...');
+                // simulate network latency
+                setTimeout(() => {
+                    // In a real setup, replace with fetch() to your endpoint.
+                    console.log('Contact form submission (simulated):', data);
+                    setStatus('Message sent — thanks! We will reply within 24 hours.');
+                    form.reset();
+                    sendBtn.disabled = false;
+                    // focus back to first field for convenience
+                    form.name.focus();
+                }, 900);
+            });
+
+            clearBtn.addEventListener('click', () => {
+                form.reset();
+                setStatus('Form cleared');
+                form.name.focus();
+            });
+
+            // small UX: update status when user types
+            form.addEventListener('input', () => {
+                setStatus('Ready to send');
+            });
+
+            // accessibility: allow Enter on focused button
+            sendBtn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') sendBtn.click();
+            });
+        })();
+    </script>
+</body>
+
+</html>
+</div>
+</aside>
+</footer>
+</div>
