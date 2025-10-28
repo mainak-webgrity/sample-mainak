@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Landing — Contact Us</title>
+    <title>Contact Mainak</title>
     <meta name="description" content="Simple responsive landing page with a contact form." />
     <style>
         :root {
@@ -17,7 +17,22 @@
             --max: 1000px;
             --gap: 20px;
             --shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+            --text: #e6eef8;
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        /* Light theme overrides */
+        html[data-theme="light"] {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --accent: #06b6d4;
+            --muted: #475569;
+            --glass: rgba(2, 6, 23, 0.02);
+            --radius: 12px;
+            --max: 1000px;
+            --gap: 20px;
+            --shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+            --text: #0b1220;
         }
 
         * {
@@ -30,12 +45,12 @@
         }
 
         body {
-            margin: 0;  
+            margin: 0;
             background:
                 radial-gradient(800px 400px at 10% 10%, rgba(110, 231, 183, 0.06), transparent 8%),
                 radial-gradient(600px 300px at 90% 90%, rgba(99, 102, 241, 0.04), transparent 6%),
                 var(--bg);
-            color: #e6eef8;
+            color: var(--text);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             padding: 48px 16px;
@@ -78,6 +93,45 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            width: 100%;
+        }
+
+        /* theme toggle aligned to the right of the header */
+        .theme-toggle {
+            margin-left: auto;
+            align-self: start;
+        }
+
+        /* theme toggle icons */
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle .icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            display: none;
+            /* shown according to data-theme below */
+        }
+
+        /* show appropriate icon based on current theme */
+        html[data-theme="light"] .theme-toggle .icon--sun {
+            display: inline-block;
+        }
+
+        html[data-theme="light"] .theme-toggle .icon--moon {
+            display: none;
+        }
+
+        html[data-theme="dark"] .theme-toggle .icon--moon {
+            display: inline-block;
+        }
+
+        html[data-theme="dark"] .theme-toggle .icon--sun {
+            display: none;
         }
 
         .logo {
@@ -272,11 +326,44 @@
     <main class="container" role="main">
         <section class="hero" aria-labelledby="hero-title">
             <div class="brand" aria-hidden="false">
-                <div class="logo">LP</div>
-                <div>
-                    <h1 id="hero-title">Contact Mainak Deb <br> Technical Project Manager</h1>
-                    <p class="lead">Fast, responsive and accessible. Get in touch and we'll respond within 24 hours.</p>
+                <div class="logo" role="img" aria-label="Mainak Deb - Technical Project Manager"
+                    title="Mainak Deb - Technical Project Manager">
+                    <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true" focusable="false"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="pmGrad" x1="0" x2="1" y1="0" y2="1">
+                                <stop offset="0" stop-color="#6ee7b7" />
+                                <stop offset="1" stop-color="#6366f1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="40" height="40" rx="10" fill="url(#pmGrad)" />
+                        <text x="50%" y="55%" text-anchor="middle" font-size="15" font-weight="700" fill="#05202a"
+                            font-family="Inter, system-ui, Arial">MD</text>
+                    </svg>
                 </div>
+                <div>
+                    <h1 id="hero-title">Contact Mainak Deb <br>Project Manager</h1>
+                    <p class="lead">Fast, responsive and accessible. Get in touch and I'll respond within 24 hours.</p>
+                </div>
+
+                <!-- Theme toggle button -->
+                <button id="themeToggle" class="secondary theme-toggle" aria-pressed="false" title="Toggle theme">
+                    <!-- Sun (light) -->
+                    <svg class="icon icon--sun" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 4V2M12 22v-2M4 12H2M22 12h-2M5 5l-1.4-1.4M20.4 20.4 19 19M19 5l1.4-1.4M5 19l1.4-1.4"
+                            stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6" />
+                    </svg>
+                    <!-- Moon (dark) -->
+                    <svg class="icon icon--moon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z" stroke="currentColor" stroke-width="1.6"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span class="sr-only">Toggle theme</span>
+                </button>
             </div>
 
             <div style="margin-top:8px;">
@@ -428,11 +515,52 @@
                 if (e.key === 'Enter') sendBtn.click();
             });
         })();
+
+        // Theme toggle logic
+        (function () {
+            const toggle = document.getElementById('themeToggle');
+            const storageKey = 'theme-preference';
+
+            function getPreferredTheme() {
+                const saved = localStorage.getItem(storageKey);
+                if (saved === 'light' || saved === 'dark') return saved;
+                // fallback to system preference
+                return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            }
+
+            function applyTheme(t) {
+                document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+                if (toggle) {
+                    toggle.setAttribute('aria-pressed', t === 'light' ? 'true' : 'false');
+                    // set an explanatory title (action wording)
+                    toggle.setAttribute('title', t === 'light' ? 'Switch to dark theme' : 'Switch to light theme');
+                    const sr = toggle.querySelector('.sr-only');
+                    if (sr) sr.textContent = t === 'light' ? 'Light theme active — press to switch to dark' : 'Dark theme active — press to switch to light';
+                }
+            }
+
+            function toggleTheme() {
+                const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+                const next = current === 'light' ? 'dark' : 'light';
+                localStorage.setItem(storageKey, next);
+                applyTheme(next);
+            }
+
+            // init
+            const initial = getPreferredTheme();
+            applyTheme(initial);
+
+            if (toggle) {
+                toggle.addEventListener('click', toggleTheme);
+                toggle.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleTheme();
+                    }
+                });
+            }
+        })();
     </script>
 </body>
 
 </html>
-</div>
-</aside>
-</footer>
-</div>
